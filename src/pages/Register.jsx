@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import registerBackground from '../assets/sign.jpg';
 import { signInWithGoogle } from '../firebase';
 import googleLogo from '../assets/google.png';
+import { motion } from 'framer-motion';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -60,8 +61,13 @@ export default function RegisterPage() {
           style={{ backgroundImage: `url(${registerBackground})` }}
         />
 
-        {/* Right Column: Form */}
-        <div className="flex flex-1 justify-left items-left w-full md:w-auto p-0 md:p-0">
+        {/* Right Column: Form with Animation */}
+        <motion.div
+          className="flex flex-1 justify-left items-left w-full md:w-auto p-0 md:p-0"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <div className="max-w-md w-full space-y-8 p-8 rounded-lg">
             <div>
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -70,7 +76,7 @@ export default function RegisterPage() {
             </div>
 
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-              {/* Google Button Only - Centered */}
+              {/* Google Button */}
               <div className="flex justify-center">
                 <button
                   type="button"
@@ -82,7 +88,7 @@ export default function RegisterPage() {
                 </button>
               </div>
 
-              {/* OR */}
+              {/* OR Divider */}
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
@@ -168,7 +174,7 @@ export default function RegisterPage() {
                 </button>
               </div>
 
-              {/* Already have account? */}
+              {/* Already have account */}
               <div className="text-center text-sm mt-8">
                 <span className="text-gray-600">Already have an account? </span>
                 <button
@@ -181,8 +187,9 @@ export default function RegisterPage() {
               </div>
             </form>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
 }
+

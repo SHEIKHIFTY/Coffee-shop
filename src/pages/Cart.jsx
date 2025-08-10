@@ -2,14 +2,12 @@
 import React from 'react';
 import { useCart } from '../contexts/CartContext'; // Import useCart hook
 import { FaTrashAlt } from 'react-icons/fa'; // Import a trash icon for removal
+import { motion } from "framer-motion";
 
 const Cart = () => {
   const { cartItems, removeItemFromCart, updateItemQuantity, getCartTotal } = useCart();
 
-  // Assuming getCartTotal already handles subtotal and potentially tax/shipping
-  // If not, you might want to calculate subtotal, tax, and total here separately
-  // For demonstration, let's assume getCartTotal returns the final grand total.
-  // If you need subtotal, tax, and total separately for display, you'd calculate them here.
+ 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const shippingCost = 5.00; // Example fixed shipping cost
   const grandTotal = subtotal + shippingCost; // Assuming this is your final total
@@ -19,7 +17,15 @@ const Cart = () => {
       <div className="container mx-auto max-w-7xl flex flex-col md:flex-row gap-10 px-4">
         {/* Cart Table */}
         <div className="w-full md:w-2/3"> {/* sm:w-full is redundant if w-full is already set */}
-          <h2 className="text-3xl font-serif font-semibold text-[#1a1a1a] mb-6">My Cart</h2>
+         <motion.h2
+            className="text-3xl font-serif font-semibold text-[#1a1a1a] mb-6"
+            initial={{ x: -100, opacity: 0 }}           // Start from left
+            whileInView={{ x: 0, opacity: 1 }}          // Move to normal position
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            viewport={{ once: false, amount: 0.3 }}     // Trigger every time it's scrolled into view
+           >
+           My Cart
+       </motion.h2>
           {cartItems.length === 0 ? (
             <p className="text-gray-600">Your cart is empty.</p>
           ) : (

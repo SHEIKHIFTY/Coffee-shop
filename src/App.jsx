@@ -10,11 +10,8 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import SignInPage from "./pages/SignInPage";
 import Register from "./pages/Register";
-
-// import ProductCard from "./components/ProductCard";
-
 import { useEffect } from "react";
-import { CartProvider } from './contexts/CartContext'; // Import the CartProvider
+import { CartProvider } from './contexts/CartContext';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -30,8 +27,8 @@ function ScrollToTop() {
 function App() {
   return (
     <Router>
-      <ScrollToTop /> {/* Scroll to top on every route change */}
-      <CartProvider> {/* Wrap your entire app content that needs cart access */}
+      <ScrollToTop />
+      <CartProvider>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -42,10 +39,6 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/register" element={<Register />} />
-          
-          {/* <Route path="/productcard" element={<ProductCard />} /> */}
-
-          {/* This route acts as a catch-all for undefined routes */}
           <Route path="*" element={<SignInPage />} />
         </Routes>
         <Footer />

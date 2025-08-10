@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import contactImage from "../assets/contact.jpg";
 
 export default function Contact() {
@@ -6,12 +7,24 @@ export default function Contact() {
       <div className="container max-w-3xl bg-white rounded-lg shadow-xl overflow-hidden flex flex-col md:flex-row">
         
         {/* Left Side Image - Hidden on mobile */}
-        <div className="hidden md:block md:w-1/2">
+        <motion.div
+          className="hidden md:block md:w-1/2"
+          initial={{ x: -100, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.3 }}
+        >
           <img src={contactImage} alt="Contact" className="w-full h-full object-cover" />
-        </div>
+        </motion.div>
 
         {/* Right Side Content */}
-        <div className="w-full md:w-1/2 px-4 sm:px-6 md:pr-8 flex flex-col justify-center mt-8 md:mt-20 mb-4">
+        <motion.div
+          className="w-full md:w-1/2 px-4 sm:px-6 md:pr-8 flex flex-col justify-center mt-8 md:mt-20 mb-4"
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1, duration: 0.5, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.3 }}
+        >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-8 sm:mb-10 font-serif text-[#2f2a25] text-center md:text-left">
             Fill the form to share your thoughts.
           </h2>
@@ -76,7 +89,7 @@ export default function Contact() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

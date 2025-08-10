@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import signInBackground from '../assets/sign.jpg';
 import { signInWithGoogle } from '../firebase';
 import googleLogo from '../assets/google.png';
 
 export default function SignInPage() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleRegisterNowClick = () => {
     navigate('/register');
@@ -14,30 +16,45 @@ export default function SignInPage() {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     console.log("Login form submitted!");
-    // Add your own auth logic here if needed
   };
 
   const handleGoogleLogin = async () => {
+    if (loading) return; // Prevent multiple clicks
+
+    setLoading(true);
     try {
       const result = await signInWithGoogle();
       console.log("Google login success:", result.user);
       navigate('/');
     } catch (err) {
       console.error("Google login error:", err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="bg-[#f8f1e9]">
       <div className="container mx-auto flex flex-col md:flex-row min-h-min mt-12 items-center justify-center px-4 md:px-8 lg:px-24 gap-10">
-        {/* Background Image */}
-        <div
+
+        {/* Image Animation */}
+        <motion.div
           className="hidden md:flex flex-1 min-h-[800px] min-w-[802px] md:h-full bg-cover bg-center rounded-lg justify-center items-center mt-20"
           style={{ backgroundImage: `url(${signInBackground})` }}
+          initial={{ x: -150, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.3 }}
         />
 
-        {/* Form */}
-        <div className="flex flex-1 justify-left items-left w-full md:w-auto p-4 md:p-0">
+        {/* Text/Form Animation */}
+        <motion.div
+          className="flex flex-1 justify-left items-left w-full md:w-auto p-4 md:p-0"
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1, duration: 0.4, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.3 }}
+        >
           <div className="max-w-md w-full space-y-8 p-8 rounded-lg">
             <div>
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -46,19 +63,22 @@ export default function SignInPage() {
             </div>
 
             <form className="mt-8 space-y-6" onSubmit={handleLoginSubmit}>
-              {/* Google Button Only - Centered */}
+              {/* Google Button */}
               <div className="flex justify-center">
                 <button
                   type="button"
                   onClick={handleGoogleLogin}
-                  className="group relative flex items-center justify-center py-2 px-4 w-full border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                  disabled={loading}
+                  className={`group relative flex items-center justify-center py-2 px-4 w-full border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 ${
+                    loading ? "cursor-not-allowed opacity-60" : ""
+                  }`}
                 >
                   <img src={googleLogo} alt="Google" className="w-5 h-5 mr-2" />
-                  Continue with Google
+                  {loading ? "Signing in..." : "Continue with Google"}
                 </button>
               </div>
 
-              {/* OR Separator */}
+              {/* OR */}
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
@@ -68,7 +88,7 @@ export default function SignInPage() {
                 </div>
               </div>
 
-              {/* Email Input */}
+              {/* Email */}
               <div>
                 <input
                   id="email-address"
@@ -81,7 +101,7 @@ export default function SignInPage() {
                 />
               </div>
 
-              {/* Password Input */}
+              {/* Password */}
               <div className="mt-4">
                 <input
                   id="password"
@@ -94,7 +114,7 @@ export default function SignInPage() {
                 />
               </div>
 
-              {/* Login Button */}
+              {/* Login */}
               <div className="flex items-center justify-between mt-6">
                 <button
                   type="submit"
@@ -109,7 +129,7 @@ export default function SignInPage() {
                 </div>
               </div>
 
-              {/* Register Now */}
+              {/* Register */}
               <div className="text-center text-sm mt-8">
                 <span className="text-gray-600">Don't Have An Account? </span>
                 <button
@@ -122,7 +142,7 @@ export default function SignInPage() {
               </div>
             </form>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -50,7 +50,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 shadow-lg rounded-sm">
+    <header className="fixed top-0 left-0 w-full z-[9999] shadow-lg rounded-sm">
       {/* Top banner */}
       <div className="bg-[#3c352e] w-full">
         <div className="text-white text-xs text-center py-1 px-4">
@@ -80,7 +80,7 @@ export default function Navbar() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4 text-sm text-gray-700">
-            {/* Search */}
+            {/* Search (desktop only) */}
             <form onSubmit={handleSearch} className="hidden lg:flex items-center border rounded px-2 py-1">
               <input
                 type="text"
@@ -94,7 +94,7 @@ export default function Navbar() {
               </button>
             </form>
 
-            {/* Cart */}
+            {/* Cart Icon */}
             <Link to="/cart" className="relative hover:text-yellow-700">
               <ShoppingCart size={18} />
               <span className="absolute -top-2 -right-2 bg-yellow-700 text-white text-xs rounded-full px-1 min-w-[18px] text-center">
@@ -102,20 +102,26 @@ export default function Navbar() {
               </span>
             </Link>
 
-            {/* Auth / Profile Dropdown */}
+            {/* Profile Picture & Dropdown - Desktop and Mobile */}
             {user ? (
-              <div className="relative hidden lg:block" ref={dropdownRef}>
+              <div className="relative" ref={dropdownRef}>
+                {/* Profile button visible always (desktop + mobile/tablet) */}
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center gap-2 focus:outline-none"
+                  aria-haspopup="true"
+                  aria-expanded={dropdownOpen}
                 >
                   <img
                     src={user.photoURL || '/default-profile.png'}
                     alt="Profile"
                     className="w-10 h-10 rounded-full hover:scale-105 object-cover"
                   />
-                  <ChevronDown className="text-gray-700" size={18} />
+                  {/* Chevron shown only on desktop */}
+                  <ChevronDown className="text-gray-700 hidden lg:block" size={18} />
                 </button>
+
+                {/* Dropdown menu */}
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-white rounded shadow-lg z-50">
                     <div className="p-4 border-b border-gray-200">
@@ -133,10 +139,11 @@ export default function Navbar() {
                 )}
               </div>
             ) : (
+              // Sign In button visible on desktop only
               <Link to="/signin" className="hidden lg:block text-sm hover:text-yellow-700">Sign In</Link>
             )}
 
-            {/* Hamburger Menu (Mobile and Tablet Screens) */}
+            {/* Hamburger Menu (Mobile and Tablet) */}
             <div className="lg:hidden">
               <button onClick={() => setMobileMenuOpen(true)} className="text-gray-700">
                 <Menu size={24} />
@@ -147,52 +154,59 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Drawer Menu (Tablet and Mobile) */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-40">
-          <div className="fixed top-0 right-0 w-64 h-full bg-white shadow-lg p-6 overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-xl font-bold text-gray-900">Menu</span>
-              <button onClick={() => setMobileMenuOpen(false)}>
-                <X size={24} className="text-gray-700" />
-              </button>
-            </div>
-            <form onSubmit={handleSearch} className="flex items-center border rounded px-2 py-1 mb-4">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search..."
-                className="outline-none text-sm px-1 w-full"
-              />
-              <button type="submit" className="text-gray-700 hover:text-yellow-700">
-                <Search size={18} />
-              </button>
-            </form>
-            <nav className="flex flex-col gap-4 text-gray-700 text-sm">
-              <Link to="/" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Home</Link>
-              <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">About Us</Link>
-              <Link to="/menu" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Coffee & Drinks</Link>
-              <Link to="/reservation" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Reservation</Link>
-              <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Contact Us</Link>
-              <Link to="/cart" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Cart ({getTotalItems()})</Link>
-              {user ? (
-                <button
-                  onClick={() => {
-                    handleSignOut();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="text-left text-red-600 hover:bg-gray-100 px-2 py-1 rounded"
-                >
-                  <LogOut size={16} className="inline mr-2" />
-                  Sign Out
-                </button>
-              ) : (
-                <Link to="/signin" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Sign In</Link>
-              )}
-            </nav>
-          </div>
+      <div
+        className={`fixed inset-0 z-[9998] bg-black bg-opacity-40 transition-opacity duration-300 ${
+          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+      ></div>
+
+      <div
+        className={`fixed top-0 right-0 w-64 h-full bg-white shadow-lg p-6 overflow-y-auto z-[9999] transform transition-transform duration-300 ${
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <span className="text-xl font-bold text-gray-900">Menu</span>
+          <button onClick={() => setMobileMenuOpen(false)}>
+            <X size={24} className="text-gray-700" />
+          </button>
         </div>
-      )}
+        <form onSubmit={handleSearch} className="flex items-center border rounded px-2 py-1 mb-4">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search..."
+            className="outline-none text-sm px-1 w-full"
+          />
+          <button type="submit" className="text-gray-700 hover:text-yellow-700">
+            <Search size={18} />
+          </button>
+        </form>
+        <nav className="flex flex-col gap-4 text-gray-700 text-sm">
+          <Link to="/" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Home</Link>
+          <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">About Us</Link>
+          <Link to="/menu" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Coffee & Drinks</Link>
+          <Link to="/reservation" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Reservation</Link>
+          <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Contact Us</Link>
+          <Link to="/cart" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Cart ({getTotalItems()})</Link>
+          {user ? (
+            <button
+              onClick={() => {
+                handleSignOut();
+                setMobileMenuOpen(false);
+              }}
+              className="text-left text-red-600 hover:bg-gray-100 px-2 py-1 rounded"
+            >
+              <LogOut size={16} className="inline mr-2" />
+              Sign Out
+            </button>
+          ) : (
+            <Link to="/signin" onClick={() => setMobileMenuOpen(false)} className="hover:text-yellow-700">Sign In</Link>
+          )}
+        </nav>
+      </div>
     </header>
   );
 }
