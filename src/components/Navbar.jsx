@@ -116,6 +116,7 @@ export default function Navbar() {
                     src={user.photoURL || '/default-profile.png'}
                     alt="Profile"
                     className="w-10 h-10 rounded-full hover:scale-105 object-cover"
+                    referrerPolicy="no-referrer"  
                   />
                   {/* Chevron shown only on desktop */}
                   <ChevronDown className="text-gray-700 hidden lg:block" size={18} />

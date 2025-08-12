@@ -164,18 +164,19 @@ return (
     </motion.div>
           {/* Right Side Coffee Image */}
          <motion.div
-      className="mt-10 md:mt-0 flex justify-center items-end w-full pt-10"
-      variants={imageVariant}
-      initial="hidden"
-      whileInView="visible"
-     
-    >
-      <img
-        src={coffee}
-        alt="coffee cup"
-        className="w-full h-full object-cover"
-      />
-    </motion.div>
+  className="mt-10 md:mt-0 flex justify-center items-end w-full pt-0 md:pt-0 min-h-[400px] md:min-h-[600px]"
+  variants={imageVariant}
+  initial="hidden"
+  whileInView="visible"
+>
+  <img
+    src={coffee}
+    alt="coffee cup"
+    className="w-full h-[90vh] md:h-[60vh] object-cover"
+    style={{ alignSelf: 'flex-end' }}
+  />
+</motion.div>
+
         </div>
       </div>
 
@@ -332,43 +333,33 @@ return (
 
   {/* Cards come in with staggered smooth slide */}
   <motion.div
-    className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.2 }}
-    variants={{
-      hidden: {},
-      visible: {
-        transition: {
-          staggerChildren: 0.2, // delay between each card
-        },
-      },
-    }}
-  >
-    {coffeeProducts.map((product, idx) => (
-      <motion.div
-        key={idx}
-        variants={{
-          hidden: { opacity: 0, y: 30 },
-          visible: { opacity: 1, y: 0 },
-        }}
-        transition={{
-          type: "tween",
-          duration: 0.5,
-          ease: "easeOut",
-        }}
-      >
-        <ProductCard
-          image={product.image}
-          name={product.name}
-          description={product.description}
-          price={product.price}
-          discount={product.discount}
-          rating={product.rating}
-        />
-      </motion.div>
-    ))}
-  </motion.div>
+  className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
+>
+  {coffeeProducts.map((product, idx) => (
+    <motion.div
+      key={idx}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{
+        type: "tween",
+        duration: 0.6,        // longer animation duration
+        ease: "easeOut",
+        delay: idx * 0.2,     // increased stagger delay
+      }}
+    >
+      <ProductCard
+        image={product.image}
+        name={product.name}
+        description={product.description}
+        price={product.price}
+        discount={product.discount}
+        rating={product.rating}
+      />
+    </motion.div>
+  ))}
+</motion.div>
+
 </div>
 
       {/* Food Section - NOW USING ProductCard */}
@@ -407,44 +398,34 @@ return (
   </motion.p>
 
   {/* Cards stagger in */}
-  <motion.div
-    className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.2 }}
-    variants={{
-      hidden: {},
-      visible: {
-        transition: {
-          staggerChildren: 0.2,
-        },
-      },
-    }}
-  >
-    {foodProducts.map((product, idx) => (
-      <motion.div
-        key={idx}
-        variants={{
-          hidden: { opacity: 0, y: 30 },
-          visible: { opacity: 1, y: 0 },
-        }}
-        transition={{
-          type: "tween",
-          duration: 0.5,
-          ease: "easeOut",
-        }}
-      >
-        <ProductCard
-          image={product.image}
-          name={product.name}
-          description={product.description}
-          price={product.price}
-          discount={product.discount}
-          rating={product.rating}
-        />
-      </motion.div>
-    ))}
-  </motion.div>
+ <motion.div
+  className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
+>
+  {foodProducts.map((product, idx) => (
+    <motion.div
+      key={idx}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{
+        type: "tween",
+        duration: 0.6,
+        ease: "easeOut",
+        delay: idx * 0.2,  // stagger delay for separate animation
+      }}
+    >
+      <ProductCard
+        image={product.image}
+        name={product.name}
+        description={product.description}
+        price={product.price}
+        discount={product.discount}
+        rating={product.rating}
+      />
+    </motion.div>
+  ))}
+</motion.div>
+
 </div>
 
       {/* Our Category Section - NOW USING ProductCard */}
@@ -473,162 +454,143 @@ return (
 
   {/* Coffee Section */}
   <motion.div
-    className="mt-10"
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ type: "tween", duration: 0.6, ease: "easeOut" }}
+  className="mt-10"
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ type: "tween", duration: 0.6, ease: "easeOut" }}
+  viewport={{ once: false, amount: 0.2 }}
+>
+  <motion.h3
+    className="text-2xl font-bold text-gray-800 mb-32"
+    initial={{ y: -20, opacity: 0 }}
+    whileInView={{ y: 0, opacity: 1 }}
+    transition={{ type: "spring", stiffness: 120, damping: 8, duration: 0.5 }}
     viewport={{ once: false, amount: 0.2 }}
   >
-    <motion.h3
-      className="text-2xl font-bold text-gray-800 mb-32"
-      initial={{ y: -20, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 120, damping: 8, duration: 0.5 }}
-      viewport={{ once: false, amount: 0.2 }}
-    >
-      Coffee
-    </motion.h3>
+    Coffee
+  </motion.h3>
+
+<motion.div
+  className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
+>
+  {coffeeProducts.map((product, idx) => (
     <motion.div
-      className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
-      initial="hidden"
-      whileInView="visible"
+      key={idx}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.2 }}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: 0.2,
-          },
-        },
+      transition={{
+        type: "tween",
+        duration: 0.6,        // longer animation duration
+        ease: "easeOut",
+        delay: idx * 0.2,     // increased stagger delay
       }}
     >
-      {categoryCoffeeItems.map((item, i) => (
-        <motion.div
-          key={i}
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0 },
-          }}
-          transition={{ type: "tween", duration: 0.5, ease: "easeOut" }}
-        >
-          <ProductCard
-            image={item.image}
-            name={item.name}
-            description={item.description}
-            price={item.price}
-            discount={item.discount}
-            rating={item.rating}
-          />
-        </motion.div>
-      ))}
+      <ProductCard
+        image={product.image}
+        name={product.name}
+        description={product.description}
+        price={product.price}
+        discount={product.discount}
+        rating={product.rating}
+      />
     </motion.div>
-  </motion.div>
+  ))}
+</motion.div>
+
+</motion.div>
 
   {/* Food Section */}
   <motion.div
-    className="mt-24"
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ type: "tween", duration: 0.6, ease: "easeOut" }}
+  className="mt-24"
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ type: "tween", duration: 0.6, ease: "easeOut" }}
+  viewport={{ once: false, amount: 0.2 }}
+>
+  <motion.h3
+    className="text-2xl font-bold text-gray-800 mb-6"
+    initial={{ y: -20, opacity: 0 }}
+    whileInView={{ y: 0, opacity: 1 }}
+    transition={{ type: "spring", stiffness: 120, damping: 8, duration: 0.5 }}
     viewport={{ once: false, amount: 0.2 }}
   >
-    <motion.h3
-      className="text-2xl font-bold text-gray-800 mb-6"
-      initial={{ y: -20, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 120, damping: 8, duration: 0.5 }}
-      viewport={{ once: false, amount: 0.2 }}
-    >
-      Food
-    </motion.h3>
-    <motion.div
-      className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 mt-24"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.2 }}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: 0.2,
-          },
-        },
-      }}
-    >
-      {categoryFoodItems.map((item, i) => (
-        <motion.div
-          key={i}
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0 },
-          }}
-          transition={{ type: "tween", duration: 0.5, ease: "easeOut" }}
-        >
-          <ProductCard
-            image={item.image}
-            name={item.name}
-            description={item.description}
-            price={item.price}
-            discount={item.discount}
-            rating={item.rating}
-          />
-        </motion.div>
-      ))}
-    </motion.div>
-  </motion.div>
+    Food
+  </motion.h3>
+
+  <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 mt-24">
+    {categoryFoodItems.map((item, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{
+          type: "tween",
+          duration: 0.6,
+          ease: "easeOut",
+          delay: i * 0.2,  // stagger animation with delay by index
+        }}
+      >
+        <ProductCard
+          image={item.image}
+          name={item.name}
+          description={item.description}
+          price={item.price}
+          discount={item.discount}
+          rating={item.rating}
+        />
+      </motion.div>
+    ))}
+  </div>
+</motion.div>
+
 
   {/* Drinks Section */}
-  <motion.div
-    className="mt-24"
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ type: "tween", duration: 0.6, ease: "easeOut" }}
+<motion.div
+  className="mt-24"
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ type: "tween", duration: 0.6, ease: "easeOut" }}
+  viewport={{ once: false, amount: 0.2 }}
+>
+  <motion.h3
+    className="text-2xl font-bold text-gray-800 mb-6"
+    initial={{ y: -20, opacity: 0 }}
+    whileInView={{ y: 0, opacity: 1 }}
+    transition={{ type: "spring", stiffness: 120, damping: 8, duration: 0.5 }}
     viewport={{ once: false, amount: 0.2 }}
   >
-    <motion.h3
-      className="text-2xl font-bold text-gray-800 mb-6"
-      initial={{ y: -20, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 120, damping: 8, duration: 0.5 }}
-      viewport={{ once: false, amount: 0.2 }}
-    >
-      Drinks
-    </motion.h3>
-    <motion.div
-      className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 mt-24"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.2 }}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: 0.2,
-          },
-        },
-      }}
-    >
-      {categoryDrinkItems.map((item, i) => (
-        <motion.div
-          key={i}
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0 },
-          }}
-          transition={{ type: "tween", duration: 0.5, ease: "easeOut" }}
-        >
-          <ProductCard
-            image={item.image}
-            name={item.name}
-            description={item.description}
-            price={item.price}
-            discount={item.discount}
-            rating={item.rating}
-          />
-        </motion.div>
-      ))}
-    </motion.div>
-  </motion.div>
+    Drinks
+  </motion.h3>
+
+  <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 mt-24">
+    {categoryDrinkItems.map((item, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{
+          type: "tween",
+          duration: 0.6,
+          ease: "easeOut",
+          delay: i * 0.2, // delay increases by 0.4s per item for staggered effect
+        }}
+      >
+        <ProductCard
+          image={item.image}
+          name={item.name}
+          description={item.description}
+          price={item.price}
+          discount={item.discount}
+          rating={item.rating}
+        />
+      </motion.div>
+    ))}
+  </div>
+</motion.div>
+
 </div>
 
       {/* rest and relax section (No changes here) */}

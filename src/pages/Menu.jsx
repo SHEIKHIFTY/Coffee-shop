@@ -40,19 +40,20 @@ const Menu = () => {
     addToCart(product);
   };
  
-  const containerVariants = {
+  
+const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.2, // delay between each card's animation
+      staggerChildren: 0.3,
     },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0 },
-}; 
+};
   return (
     <div className="bg-[#f7f1e9] text-[#2f2a25] font-serif pt-28">
       {/* Hero Section */}
@@ -148,17 +149,21 @@ const cardVariants = {
 
           {/* Product Cards */}
           <motion.div
-  className="w-full md:w-3/4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+
+  className="w-full md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
   initial="hidden"
   whileInView="visible"
   viewport={{ once: false, amount: 0.3 }}
   variants={containerVariants}
 >
+
+
+
   {[...Array(6)].map((_, index) => {
     const product = {
       id: index + 1,
       name: "Iced Latte Vertical",
-      price: 5, // Example Price
+      price: 5,
       image: milk,
     };
     return (
@@ -188,7 +193,7 @@ const cardVariants = {
       </motion.div>
     );
   })}
-</motion.div>;
+</motion.div>
         </div>
       </div>
 

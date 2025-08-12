@@ -32,14 +32,15 @@ googleProvider.setCustomParameters({
 // 📘 Facebook Auth Provider
 const facebookProvider = new FacebookAuthProvider();
 
-// 🚀 Sign in with Google
-const signInWithGoogle = () => {
-  return signInWithPopup(auth, googleProvider);
-};
-
-// 🚀 Sign in with Facebook
-const signInWithFacebook = () => {
-  return signInWithPopup(auth, facebookProvider);
+// 🚀 Sign in with Google (returns result so `result.user` works)
+const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    return result; // 🔹 Important: return so caller can access result.user
+  } catch (error) {
+    console.error("Google sign-in error:", error);
+    throw error;
+  }
 };
 
 // 🔓 Sign out function
@@ -51,6 +52,5 @@ const logout = () => {
 export {
   auth,
   signInWithGoogle,
-  signInWithFacebook,
   logout
 };
